@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出 -->
+<!-- scan:当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true -->
+<!-- scanPeriod:设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。 -->
+<!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <include resource="org/springframework/boot/logging/logback/property.xml"/>
+    <!--彩色日志配置-->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+    <property name="APP_NAME" value="nacos-simple-example"/>
+    <!--日志等级格式-->
+    <property name="LOG_LEVEL_PATTERN" value="${LOG_LEVEL_PATTERN:-%5p [${APP_NAME}]}"/>
+    <!--日志格式-->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN} --- [%thread] %logger{36} : %msg%n${LOG_EXCEPTION_CONVERSION_WORD:1}"/>
+    <!--控制台格式-->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} (${LOG_LEVEL_PATTERN}) --- (${PID:- }){magenta} [%thread](%logger{36}){cyan} : %msg%n${LOG_EXCEPTION_CONVERSION_WORD:1}"/>
+    <!--日志路径-->
+    <property name="LOG_ROOT_PATH" value="${CCI_LOG_DIR:-${user.dir}/logs}/${APP_NAME:-boot}/"/>
+    <!--日志分割-->
+    <!--最大保存历史-->
+    <property name="MAX_HISTORY" value="60"/>
+    <!--最大文件大小-->
+    <property name="MAX_FILE_SIZE" value="50MB"/>
+    <!--最大日志大小-->
+    <property name="TOTAL_SIZE_CAP" value="5GB"/>
+    <!--日志后缀-->
+    <property name="LOG_SUFFIX" value="log.zip"/>
+
+    <!--控制台输出-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+           <!-- <pattern>${CONSOLE_LOG_PATTERN}</pattern>-->
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+    <!-- 全局日志文件 -->
+    <appender name="GLOBAL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_ROOT_PATH}/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROOT_PATH}/application/application-%d{yyyy-MM-dd}.%i.${LOG_SUFFIX}</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <append>true</append>
+        <prudent>false</prudent>
+    </appender>
+
+    <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_ROOT_PATH}/log_debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROOT_PATH}/debug/debug-%d{yyyy-MM-dd}.%i.${LOG_SUFFIX}</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <append>true</append>
+        <prudent>false</prudent>
+    </appender>
+
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_ROOT_PATH}/log_info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROOT_PATH}/info/info-%d{yyyy-MM-dd}.%i.${LOG_SUFFIX}</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <append>true</append>
+        <prudent>false</prudent>
+    </appender>
+
+    <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_ROOT_PATH}/log_warn.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROOT_PATH}/warn/warn-%d{yyyy-MM-dd}.%i.${LOG_SUFFIX}</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <append>true</append>
+        <prudent>false</prudent>
+    </appender>
+
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_ROOT_PATH}/log_error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROOT_PATH}/error/error-%d{yyyy-MM-dd}.%i.${LOG_SUFFIX}</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <append>true</append>
+        <prudent>false</prudent>
+    </appender>
+
+
+    <logger name="com.yibai" additivity="false" level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="GLOBAL_FILE"/>
+    </logger>
+
+    <logger name="com.alibaba.nacos" additivity="false" level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="GLOBAL_FILE"/>
+    </logger>
+
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="GLOBAL_FILE"/>
+        <!--
+		<appender-ref ref="DEBUG_FILE"/>
+        <appender-ref ref="INFO_FILE"/>
+        <appender-ref ref="WARN_FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+		-->
+    </root>
+
+</configuration>

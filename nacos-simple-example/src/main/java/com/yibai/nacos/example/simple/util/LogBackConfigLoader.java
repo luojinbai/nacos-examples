@@ -1,4 +1,4 @@
-package com.yibai.nacos.example.simple;
+package com.yibai.nacos.example.simple.util;
 
 /**
  * @author yb

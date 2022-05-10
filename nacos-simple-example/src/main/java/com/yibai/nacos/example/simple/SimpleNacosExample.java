@@ -5,6 +5,9 @@ import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
+import com.alibaba.nacos.client.utils.LogUtils;
+import com.yibai.nacos.example.simple.util.LogBackConfigLoader;
+import org.slf4j.Logger;
 
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -14,15 +17,21 @@ import java.util.concurrent.TimeUnit;
  * @author yb
  * @date 2022/5/9 16:37
  */
+//@Slf4j
 public class SimpleNacosExample {
 
     private final static String SERVICE_ADDRESS = "127.0.0.1";
+    private final static String ENDPOINT = SERVICE_ADDRESS;
+    private final static String ENDPOINT_PORT = "8848";
     //    private final static String SERVICE_ADDRESS = "8.135.109.39";
     private final static String DATA_ID = "example";
     private final static String GROUP = "DEFAULT_GROUP";
-    private final static String NAMESPACE = "public";
+    /***  ""是默认public的NameSpace  */
+    private final static String NAMESPACE = "";
 
     private static Properties properties = new Properties();
+
+    private static final Logger log = LogUtils.logger(SimpleNacosExample.class);
 
     static {
         try {
@@ -32,7 +41,11 @@ public class SimpleNacosExample {
 //            logger.debug("Hello");
 
             // 公共配置
+            properties.put(PropertyKeyConst.NAMESPACE, NAMESPACE);
             properties.put(PropertyKeyConst.SERVER_ADDR, SERVICE_ADDRESS);
+//            properties.put(PropertyKeyConst.ENDPOINT, ENDPOINT);
+//            properties.put(PropertyKeyConst.ENDPOINT_PORT, ENDPOINT_PORT);
+//            properties.put(PropertyKeyConst.CLUSTER_NAME, "v1/ns/service/list");
         } catch (Exception e) {
             e.printStackTrace();
         }

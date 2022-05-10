@@ -1,6 +1,5 @@
 package com.yibai.nacos.example.simple;
 
-import ch.qos.logback.core.joran.spi.JoranException;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -98,6 +97,4 @@ public class SimpleNacosExample {
             }
         }
     }
-
-
 }

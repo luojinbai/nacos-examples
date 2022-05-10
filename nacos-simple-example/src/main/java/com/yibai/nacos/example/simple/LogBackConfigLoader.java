@@ -30,7 +30,7 @@ public class LogBackConfigLoader {
 
     public static void load(String fileName) throws IOException, JoranException {
         LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        ClassLoader classLoader = SimpleNacosExample.class.getClassLoader();
+        ClassLoader classLoader = LogBackConfigLoader.class.getClassLoader();
         URL url = classLoader.getResource(fileName);
         if (Objects.isNull(url)) {
             throw new IOException("Logback External Config File Parameter does not reference a file that exists");
@@ -54,5 +54,4 @@ public class LogBackConfigLoader {
             }
         }
     }
-
 }

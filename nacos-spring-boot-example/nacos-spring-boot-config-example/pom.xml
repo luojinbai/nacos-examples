@@ -12,7 +12,8 @@
     <artifactId>nacos-spring-boot-config-example</artifactId>
 
     <properties>
-        <nacos-config-spring-boot.version>0.2.1</nacos-config-spring-boot.version>
+        <!--<nacos-config-spring-boot.version>0.2.1</nacos-config-spring-boot.version>-->
+        <nacos-config-spring-boot.version>0.2.9</nacos-config-spring-boot.version>
     </properties>
 
     <dependencies>
